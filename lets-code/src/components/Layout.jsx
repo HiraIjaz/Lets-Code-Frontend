@@ -1,12 +1,30 @@
 import { Outlet } from "react-router-dom";
-
+import { Grid } from "@mui/material";
+import Container from "@mui/material/Container";
+import Header from "./Header";
 function Layout() {
   return (
     <>
-      <main>
-        <h1>Layout</h1>
-        <Outlet />
-      </main>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        sx={{
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <Header />
+        <Grid
+          container
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Outlet />
+        </Grid>
+      </Grid>
     </>
   );
 }
