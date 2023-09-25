@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { TextField, Button, Box, Link, Alert, AlertTitle } from "@mui/material";
 import { login } from "./usersSlice";
 import AutoCloseAlert from "../../components/AutoCloseAlter";
-
+import { routes } from "../../routes";
 import {
   getUserError,
   getUserLoading,
@@ -36,39 +36,41 @@ function LoginForm() {
     dispatch(login(values)).then((res) => {
       if (!res.error) {
         setSubmitting(false);
-        navigate(`/user/UserBasePage`);
+        navigate(routes.userBasePage);
       }
     });
   };
-  console.log(user);
 
   return (
     <>
-      <h2>Login Form</h2>
-      {error !== "loggedin" && error !== null && (
-        <Alert severity="error">
-          <AlertTitle>Error</AlertTitle>
-          {error}
-          <strong> try again!</strong>
-        </Alert>
-      )}
-      {(success === "User loggedin" ||
-        success === "You have been registered") && (
-        <AutoCloseAlert
-          message={success}
-          alertType="success"
-          time="0"
-        ></AutoCloseAlert>
-      )}
       <Box
         sx={{
           "& .MuiTextField-root": { m: 1, width: "25ch" },
+          mt: 12,
         }}
         display="flex"
         flexDirection="column"
+        alignItems="center"
         gap={2}
         autoComplete="off"
       >
+        <h2>Login Form</h2>
+        {error !== "loggedin" && error !== null && (
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            {error}
+            <strong> try again!</strong>
+          </Alert>
+        )}
+        {(success === "User loggedin" ||
+          success === "You have been registered") && (
+          <AutoCloseAlert
+            message={success}
+            alertType="success"
+            time="0"
+          ></AutoCloseAlert>
+        )}
+
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -126,7 +128,7 @@ function LoginForm() {
           Dont have an account?
           <Link
             onClick={() => {
-              navigate(`/user/signup`);
+              navigate(routes.signupPage);
             }}
           >
             register now

@@ -5,6 +5,7 @@ import { TextField, Button, Box, Alert, AlertTitle } from "@mui/material";
 import { getUserError } from "./usersSlice";
 import { register } from "./usersSlice";
 import { useNavigate } from "react-router-dom";
+import { routes } from "../../routes";
 
 function UserCreationForm() {
   const error = useSelector(getUserError);
@@ -40,7 +41,7 @@ function UserCreationForm() {
       .then((res) => {
         if (!res.error) {
           setSubmitting(false);
-          navigate(`/user/login`);
+          navigate(routes.loginPage);
         }
       })
       .catch((error) => {
@@ -50,114 +51,126 @@ function UserCreationForm() {
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
+    <Box
+      sx={{
+        "& .MuiTextField-root": { m: 1, width: "25ch" },
+        mt: 6,
+      }}
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      gap={2}
+      autoComplete="off"
     >
-      {({ isSubmitting }) => (
-        <Form
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Box display="flex" flexDirection="column" gap={2}>
-            <h2>Create Account</h2>
-            {error !== "loggedin" && error !== null && (
-              <Alert severity="error">
-                <AlertTitle>Error</AlertTitle>
-                {error}
-                <strong> try again!</strong>
-              </Alert>
-            )}
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting }) => (
+          <Form
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Box display="flex" flexDirection="column" gap={2}>
+              <h2>Create Account</h2>
+              {error !== "loggedin" && error !== null && (
+                <Alert severity="error">
+                  <AlertTitle>Error</AlertTitle>
+                  {error}
+                  <strong> try again!</strong>
+                </Alert>
+              )}
 
-            <ErrorMessage
-              className="error-message"
-              name="username"
-              component="div"
-            />
-            <Field
-              as={TextField}
-              required
-              fullWidth
-              name="username"
-              label="Username"
-            />
-            <ErrorMessage
-              className="error-message"
-              name="email"
-              component="div"
-            />
-            <Field
-              as={TextField}
-              required
-              fullWidth
-              name="email"
-              label="Email"
-            />
+              <ErrorMessage
+                className="error-message"
+                name="username"
+                component="div"
+              />
+              <Field
+                as={TextField}
+                required
+                fullWidth
+                name="username"
+                label="Username"
+              />
+              <ErrorMessage
+                className="error-message"
+                name="email"
+                component="div"
+              />
+              <Field
+                as={TextField}
+                required
+                fullWidth
+                name="email"
+                label="Email"
+              />
 
-            <ErrorMessage
-              className="error-message"
-              name="first_name"
-              component="div"
-            />
-            <Field
-              as={TextField}
-              required
-              fullWidth
-              name="first_name"
-              label="First Name"
-            />
+              <ErrorMessage
+                className="error-message"
+                name="first_name"
+                component="div"
+              />
+              <Field
+                as={TextField}
+                required
+                fullWidth
+                name="first_name"
+                label="First Name"
+              />
 
-            <ErrorMessage
-              className="error-message"
-              name="last_name"
-              component="div"
-            />
-            <Field
-              as={TextField}
-              required
-              fullWidth
-              name="last_name"
-              label="Last Name"
-            />
+              <ErrorMessage
+                className="error-message"
+                name="last_name"
+                component="div"
+              />
+              <Field
+                as={TextField}
+                required
+                fullWidth
+                name="last_name"
+                label="Last Name"
+              />
 
-            <ErrorMessage
-              className="error-message"
-              name="password"
-              component="div"
-            />
-            <Field
-              as={TextField}
-              type="password"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-            />
+              <ErrorMessage
+                className="error-message"
+                name="password"
+                component="div"
+              />
+              <Field
+                as={TextField}
+                type="password"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+              />
 
-            <ErrorMessage
-              className="error-message"
-              name="confirm_password"
-              component="div"
-            />
-            <Field
-              as={TextField}
-              type="password"
-              required
-              fullWidth
-              name="confirm_password"
-              label="Confirm Password"
-            />
-          </Box>
-          <Button sx={{ mt: 2 }} type="submit" variant="contained">
-            Register
-          </Button>
-        </Form>
-      )}
-    </Formik>
+              <ErrorMessage
+                className="error-message"
+                name="confirm_password"
+                component="div"
+              />
+              <Field
+                as={TextField}
+                type="password"
+                required
+                fullWidth
+                name="confirm_password"
+                label="Confirm Password"
+              />
+            </Box>
+            <Button sx={{ mt: 2 }} type="submit" variant="contained">
+              Register
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </Box>
   );
 }
 

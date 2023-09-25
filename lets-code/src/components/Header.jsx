@@ -4,56 +4,26 @@ import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, logout } from "../features/users/usersSlice";
+import { getUser } from "../features/users/usersSlice";
+import AccountMenu from "./AccountMenue";
+import { routes } from "../routes";
 
 export default function Header() {
   const navigate = useNavigate();
   const currentUser = useSelector(getUser);
 
-  const dispatch = useDispatch();
-
   return (
     <AppBar>
       <Toolbar>
-        <Avatar />
         {currentUser ? (
-          <>
-            <Button sx={{ color: "white" }}>{currentUser.username}</Button>
-            <Button
-              sx={{ color: "white" }}
-              onClick={() => {
-                navigate(`user/userBasePage`);
-              }}
-            >
-              Home
-            </Button>
-            <Button
-              sx={{ color: "white" }}
-              onClick={() => {
-                navigate(`user/profileInfo`);
-              }}
-            >
-              MY Profile
-            </Button>
-            <Button
-              sx={{ color: "white" }}
-              onClick={() => {
-                dispatch(logout());
-
-                navigate(`/`);
-              }}
-              disable={currentUser}
-            >
-              LogOut
-            </Button>
-          </>
+          <AccountMenu />
         ) : (
           <>
             <Button
               sx={{ color: "white" }}
               variant="outlined"
               onClick={() => {
-                navigate(`/user/login`);
+                navigate(routes.loginPage);
               }}
             >
               Login
@@ -62,7 +32,7 @@ export default function Header() {
               sx={{ color: "white" }}
               variant="outlined"
               onClick={() => {
-                navigate(`/user/signup`);
+                navigate(routes.signupPage);
               }}
             >
               SignUp

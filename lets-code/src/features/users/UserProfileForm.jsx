@@ -5,12 +5,13 @@ import { TextField, Button, Box, Alert, AlertTitle } from "@mui/material";
 import { getUserError, getUser, getSuccessMessage } from "./usersSlice";
 import { useState } from "react";
 import { updateProfile } from "./usersSlice";
+import AutoCloseAlert from "../../components/AutoCloseAlter";
 
 function UserProfileForm() {
   const error = useSelector(getUserError);
   const currentUser = useSelector(getUser);
   const success = useSelector(getSuccessMessage);
-  const [alertVisibility, setAlertVisibility] = useState(true);
+
   const dispatch = useDispatch();
   const [editForm, setEditForm] = useState(false);
   const formData = {
@@ -43,9 +44,11 @@ function UserProfileForm() {
     <Box
       sx={{
         "& .MuiTextField-root": { m: 1, width: "25ch" },
+        mt: 6,
       }}
       display="flex"
       flexDirection="column"
+      alignItems="center"
       gap={2}
       autoComplete="off"
     >
@@ -57,13 +60,13 @@ function UserProfileForm() {
         </Alert>
       )}
       {success === "user information updated" && (
-        <Alert severity="success">
-          <AlertTitle>Success</AlertTitle>
-          Information updated — <strong>successfully!</strong>
-        </Alert>
+        <AutoCloseAlert
+          message={success}
+          alertType="success"
+          time="3"
+        ></AutoCloseAlert>
       )}
       <h2>Profile Information</h2>
-
       <Formik
         initialValues={formData}
         onSubmit={handleSubmit}

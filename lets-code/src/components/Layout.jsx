@@ -16,14 +16,9 @@ function Layout() {
         }}
       >
         <Header />
-        <Grid
-          container
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-        >
+        <section className="outlet-container">
           <Outlet />
-        </Grid>
+        </section>
       </Grid>
     </>
   );

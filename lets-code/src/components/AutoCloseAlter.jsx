@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { Alert, AlertTitle } from "@mui/material";
+import { capitalizeFirstLetter } from "../utils"; // Adjust the import path as needed
 
 // eslint-disable-next-line react/prop-types
 function AutoCloseAlert({ message, alertType, time }) {
   const [open, setOpen] = useState(true);
-
-  const capitalizeFirstLetter = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
 
   const handleClose = () => {
     setOpen(false);

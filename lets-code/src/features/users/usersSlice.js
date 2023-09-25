@@ -3,7 +3,7 @@ import axios from "axios";
 const LOGIN_API_URL = 'http://127.0.0.1:8000/api/login/'
 const UPDATE_API_URL =  'http://127.0.0.1:8000/api/update/'
 const REGSITER_API_URL =  'http://127.0.0.1:8000/api/register/'
-const headers = {
+const HEADERS = {
   Authorization: `Bearer ${localStorage.getItem('access_token')}`, 
 };
 function userFromLocalStorage(){
@@ -45,7 +45,7 @@ export const register = createAsyncThunk('user/regsiter', async (credentials) =>
 
 export const updateProfile = createAsyncThunk('user/update', async (userData) => {
   try{
-    const response = await axios.put(UPDATE_API_URL, userData,{ headers })
+    const response = await axios.put(UPDATE_API_URL, userData,{ HEADERS })
     localStorage.setItem('user',JSON.stringify(response.data))
     return response.data
   }
@@ -61,13 +61,14 @@ const userSlice = createSlice({
   reducers: {
     logout: (state) => {
       localStorage.removeItem('user')
+      localStorage.removeItem('access_token')
       return {
         ...state,
       user : null,
       error: null,
       accessToken : null,
       refreshToken :null,
-      success: 'User logged out'
+      success: 'User logged out'  
       }
     },
   },
