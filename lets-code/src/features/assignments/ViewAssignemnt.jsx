@@ -8,10 +8,11 @@ import QuestionDetails from "../../components/QuestionDetails";
 
 function ViewAssignment() {
   let { id } = useParams();
-  console.log(id);
+
   const assignment = useSelector((state) =>
-    getAssignmentById(state, parseInt(id, 10))
+    getAssignmentById(state, parseInt(id, 0))
   );
+  console.log(assignment);
   const questionsList = useSelector(getSelectedQuestions);
   return (
     <Box

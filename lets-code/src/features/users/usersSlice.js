@@ -3,9 +3,7 @@ import axios from "axios";
 const LOGIN_API_URL = 'http://127.0.0.1:8000/api/login/'
 const UPDATE_API_URL =  'http://127.0.0.1:8000/api/update/'
 const REGSITER_API_URL =  'http://127.0.0.1:8000/api/register/'
-const HEADERS = {
-  Authorization: `Bearer ${localStorage.getItem('access_token')}`, 
-};
+
 function userFromLocalStorage(){
   const user = localStorage.getItem("user");
   if (user){
@@ -26,6 +24,7 @@ export const login = createAsyncThunk('user/login', async (credentials) => {
     const response = await axios.post(LOGIN_API_URL, credentials)
     localStorage.setItem('access_token',response.data.access_token)
     localStorage.setItem('user',JSON.stringify(response.data))
+    console.log(response.data)
     return response.data
   }
   catch(error){
@@ -44,8 +43,12 @@ export const register = createAsyncThunk('user/regsiter', async (credentials) =>
 });
 
 export const updateProfile = createAsyncThunk('user/update', async (userData) => {
+
   try{
-    const response = await axios.put(UPDATE_API_URL, userData,{ HEADERS })
+    const HEADERS = {
+   'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+    };
+    const response = await axios.put(UPDATE_API_URL, userData,{ headers: HEADERS })
     localStorage.setItem('user',JSON.stringify(response.data))
     return response.data
   }

@@ -5,7 +5,7 @@ import MyStepper from "../../components/MyStepper";
 function CreateAssignment() {
   const [data, setData] = useState({
     title: "",
-    details: "",
+    description: "",
   });
   const [activeStep, setActiveStep] = useState(0);
 

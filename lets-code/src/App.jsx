@@ -12,6 +12,10 @@ import AdminBase from "./pages/AdminBase";
 import CreateAssignment from "./features/assignments/CreateAssignment";
 import EditAssignment from "./features/assignments/EditAssignment";
 import ViewAssignmnet from "./features/assignments/ViewAssignemnt";
+import CreateQuestion from "./features/questions/CreateQuestion";
+import QuestionBank from "./pages/QuestionBank";
+import EditCodingQuestion from "./features/questions/EditCodingQuestion";
+import EditMcQuestion from "./features/questions/EditMcQuestion";
 function App() {
   return (
     <Routes>
@@ -40,10 +44,42 @@ function App() {
             }
           />
           <Route
+            path="createQuestion"
+            element={
+              <PrivateRoute allowedRole={"admin"}>
+                <CreateQuestion />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="editAssignment/:id"
             element={
               <PrivateRoute allowedRole={"admin"}>
                 <EditAssignment />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="editCodingQuestion/:id"
+            element={
+              <PrivateRoute allowedRole={"admin"}>
+                <EditCodingQuestion />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="editMcQuestion/:id"
+            element={
+              <PrivateRoute allowedRole={"admin"}>
+                <EditMcQuestion />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="questionBank/"
+            element={
+              <PrivateRoute allowedRole={"admin"}>
+                <QuestionBank />
               </PrivateRoute>
             }
           />

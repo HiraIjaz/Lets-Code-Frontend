@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, logout } from "../features/users/usersSlice";
 import { routes } from "../routes";
+import BallotIcon from "@mui/icons-material/Ballot";
 
 export default function AccountMenu() {
   const navigate = useNavigate();
@@ -98,9 +99,12 @@ export default function AccountMenu() {
         >
           <Person2Icon /> Profile
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <AssignmentIcon /> My Assignments
-        </MenuItem>
+        {currentUser.role !== "admin" && (
+          <MenuItem onClick={handleClose}>
+            <AssignmentIcon /> My Assignments
+          </MenuItem>
+        )}
+
         <MenuItem
           onClick={() => {
             {
@@ -113,6 +117,16 @@ export default function AccountMenu() {
         >
           <HomeIcon /> Home
         </MenuItem>
+        {currentUser.role === "admin" && (
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              navigate(routes.questionBank);
+            }}
+          >
+            <BallotIcon /> Question Bank
+          </MenuItem>
+        )}
         <Divider />
         <MenuItem
           onClick={() => {

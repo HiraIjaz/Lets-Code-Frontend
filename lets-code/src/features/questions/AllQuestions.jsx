@@ -19,14 +19,16 @@ function AllQuestions({ questionsList }) {
     <div>
       <ul>
         {questionsList.map((question) => {
-          if (question.type === "coding") {
-            return <CodingQuestion key={question.id} question={question} />;
-          } else if (question.type === "mcq") {
-            return (
-              <MultipleChoiceQuestion key={question.id} question={question} />
-            );
+          if (question.isDeleted === false) {
+            if (question.type === "coding") {
+              return <CodingQuestion key={question.id} question={question} />;
+            } else if (question.type === "mcq") {
+              return (
+                <MultipleChoiceQuestion key={question.id} question={question} />
+              );
+            }
+            return null;
           }
-          return null;
         })}
       </ul>
     </div>

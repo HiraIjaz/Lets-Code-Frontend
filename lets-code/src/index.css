@@ -62,6 +62,7 @@ li{
   margin-bottom: 10px;
   padding: 10px;
   background-color:rgba(134, 154, 186, 0.5) ;
+  
 }
 
 .Add-Remove-Btns{
@@ -86,4 +87,12 @@ li{
   display: flex;
   align-items: flex-end;
   justify-content: space-around;
+}
+.testcase-inputs{
+  display: flex;
+  flex-direction: row;
+}
+.question-deets{
+    display: flex;
+    flex-direction: column;
 }

@@ -14,7 +14,7 @@ function AllMultipleChoiceQuestions({ questionsList }) {
   return (
     <div>
       {questionsList.map((question) => {
-        if (question.type === "mcq") {
+        if (question.type === "mcq" && question.isDeleted === "false") {
           return (
             <MultipleChoiceQuestion key={question.id} question={question} />
           );

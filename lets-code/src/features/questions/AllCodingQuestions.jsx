@@ -14,7 +14,7 @@ function AllCodingQuestions({ questionsList }) {
   return (
     <div style={{ width: "80%" }}>
       {questionsList.map((question) => {
-        if (question.type === "coding") {
+        if (question.type === "coding" && question.isDeleted === "false") {
           return <CodingQuestion key={question.id} question={question} />;
         } else {
           return null;

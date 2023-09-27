@@ -25,7 +25,7 @@ function AssignemntsList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(assignmentsList[0].questions);
+  console.log(assignmentsList);
   return (
     <Box
       sx={{

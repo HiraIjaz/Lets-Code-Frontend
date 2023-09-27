@@ -1,18 +1,22 @@
 import { Box, Button } from "@mui/material";
 import AllQuestions from "../questions/AllQuestions";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { getSelectedQuestions } from "../questions/questionSlice";
 import { useParams } from "react-router-dom";
 import { getAssignmentById } from "./assignemntSlice";
-
+import { updateAssignment } from "./assignemntSlice";
+import { routes } from "../../routes";
+import { useNavigate } from "react-router-dom";
 function EditAssignment() {
   let { id } = useParams();
-  console.log(id);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const assignment = useSelector((state) =>
-    getAssignmentById(state, parseInt(id, 10))
+    getAssignmentById(state, parseInt(id, 0))
   );
+  console.log(assignment);
   const questionsList = useSelector(getSelectedQuestions);
 
   console.log(questionsList);
@@ -50,7 +54,17 @@ function EditAssignment() {
         }}
         validationSchema={validationSchema}
         onSubmit={(values, actions) => {
-          actions.setSubmitting(false);
+          const data = {
+            id: assignment.id,
+            title: values.title,
+            description: values.description,
+            questions: questionsList,
+          };
+          dispatch(updateAssignment(data)).then((res) => {
+            if (!res.error) {
+              navigate(routes.adminBasePage);
+            }
+          });
         }}
       >
         {({ values }) => (
@@ -86,12 +100,14 @@ function EditAssignment() {
               />
             </div>
             <br />
+            <h4>Questions</h4>
+            <AllQuestions questionsList={questionsList} />
+            <Button type="submit" variant="contained">
+              Save
+            </Button>
           </Form>
         )}
       </Formik>
-      <h4>Questions</h4>
-
-      <AllQuestions questionsList={questionsList} />
     </Box>
   );
 }

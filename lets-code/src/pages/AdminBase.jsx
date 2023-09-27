@@ -1,20 +1,21 @@
 import { TextField, Button, Box, Link, Alert, AlertTitle } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { fetchQuestions } from "../features/questions/questionSlice";
 import AssignemntsList from "../features/assignments/AssignemntsList";
+import { routes } from "../routes";
+import AutoCloseAlert from "../components/AutoCloseAlter";
+import { useSelector } from "react-redux";
+import { getSuccessMessage } from "../features/assignments/assignemntSlice";
+import { useState } from "react";
 function AdminBase() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  function handleClick() {
-    dispatch(fetchQuestions()).then((res) => {
-      if (!res.error) {
-        console.log("questions fetched succesfully");
-      }
-    });
-    navigate(`/user/createAssignment`);
+  const success = useSelector(getSuccessMessage);
+
+  console.log(success);
+  function handleCreateNewAssignmentClick() {
+    navigate(routes.createAssignment);
   }
+
   return (
     <>
       <Box
@@ -30,10 +31,26 @@ function AdminBase() {
         autoComplete="off"
       >
         <h2>Hi, Welcome Back</h2>
+        <hr />
         <div>
-          <Button variant="outlined" onClick={handleClick}>
+          <Button variant="outlined" onClick={handleCreateNewAssignmentClick}>
             <AddIcon /> Create New Assignment
           </Button>
+
+          {success === "Assignemnt created" && (
+            <AutoCloseAlert
+              message={success}
+              alertType="success"
+              time="2"
+            ></AutoCloseAlert>
+          )}
+          {success === "Assignemnt updated" && (
+            <AutoCloseAlert
+              message={success}
+              alertType="success"
+              time="2"
+            ></AutoCloseAlert>
+          )}
           <section id="assignmentsList">
             <AssignemntsList />
           </section>
