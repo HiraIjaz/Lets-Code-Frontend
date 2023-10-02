@@ -19,7 +19,6 @@ const CodingQuestionForm = () => {
         navigate(routes.questionBank);
       }
     });
-    console.log(values);
   };
 
   const initialValues = {

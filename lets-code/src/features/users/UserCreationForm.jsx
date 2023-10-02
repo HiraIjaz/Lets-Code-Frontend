@@ -45,7 +45,6 @@ function UserCreationForm() {
         }
       })
       .catch((error) => {
-        console.error(error.response.data);
         setSubmitting(false);
       });
   };

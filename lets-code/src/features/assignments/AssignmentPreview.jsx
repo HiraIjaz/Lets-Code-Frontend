@@ -1,28 +1,27 @@
 import AllQuestions from "../questions/AllQuestions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import SliderBtns from "../../components/SliderBtns";
 import { useNavigate } from "react-router-dom";
-import { createAssignment } from "./assignemntSlice";
+import { createAssignment } from "./assignmentSlice";
 import { routes } from "../../routes";
-
-export function AssignemntPreview({ data, next, prev, questionsList }) {
+import PropTypes from "prop-types";
+export function AssignmentPreview({ data, next, prev, questionsList }) {
   const dispath = useDispatch();
   const navigate = useNavigate();
+  const error = useSelector((state) => state.assignmnets.error);
 
   function handleSaveAssignment(data) {
-    console.log("Button clicked!");
     const assignmentData = {
       title: data.title,
       description: data.description,
       questions: questionsList,
     };
-    console.log(assignmentData);
-    dispath(createAssignment(assignmentData)).then((res) => {
-      if (!res.error) {
-        navigate(routes.adminBasePage);
-      }
-    });
+
+    dispath(createAssignment(assignmentData));
+    if (!error) {
+      navigate(routes.adminBasePage);
+    }
   }
   return (
     <>
@@ -48,4 +47,10 @@ export function AssignemntPreview({ data, next, prev, questionsList }) {
     </>
   );
 }
-export default AssignemntPreview;
+AssignmentPreview.propTypes = {
+  data: PropTypes.object.isRequired,
+  next: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired,
+  questionsList: PropTypes.array.isRequired,
+};
+export default AssignmentPreview;

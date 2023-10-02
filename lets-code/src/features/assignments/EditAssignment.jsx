@@ -5,10 +5,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { getSelectedQuestions } from "../questions/questionSlice";
 import { useParams } from "react-router-dom";
-import { getAssignmentById } from "./assignemntSlice";
-import { updateAssignment } from "./assignemntSlice";
+import { getAssignmentById } from "./assignmentSlice";
+import { updateAssignment } from "./assignmentSlice";
 import { routes } from "../../routes";
 import { useNavigate } from "react-router-dom";
+
 function EditAssignment() {
   let { id } = useParams();
   const dispatch = useDispatch();
@@ -16,10 +17,8 @@ function EditAssignment() {
   const assignment = useSelector((state) =>
     getAssignmentById(state, parseInt(id, 0))
   );
-  console.log(assignment);
-  const questionsList = useSelector(getSelectedQuestions);
 
-  console.log(questionsList);
+  const questionsList = useSelector(getSelectedQuestions);
 
   const validationSchema = Yup.object({
     title: Yup.string()

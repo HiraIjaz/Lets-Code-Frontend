@@ -1,31 +1,22 @@
 import { Box, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getAssignments } from "./assignemntSlice";
 import { putSelectedQuestions } from "../questions/questionSlice";
 import { getUser } from "../users/usersSlice";
-
-function countMCQQuestions(assignment) {
-  const mcqQuestions = assignment.questions.filter(
-    (question) => question.type === "mcq"
+import PropTypes from "prop-types";
+import Roles from "../../roles";
+function countQuestions(assignment, type) {
+  const Questions = assignment.questions.filter(
+    (question) => question.type === type
   );
-  return mcqQuestions.length;
+  return Questions.length;
 }
-
-function countCodingQuestions(assignment) {
-  const codingQuestions = assignment.questions.filter(
-    (question) => question.type === "coding"
-  );
-  return codingQuestions.length;
-}
-function AssignemntsList() {
-  const assignmentsList = useSelector(getAssignments);
+function AssignmentsList({ assignmentsList, userChoice }) {
   const currentUser = useSelector(getUser);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(assignmentsList);
   return (
     <Box
       sx={{
@@ -50,22 +41,22 @@ function AssignemntsList() {
           <div className="assignment-details">
             <p>
               <strong>Mcqs: </strong>
-              {countMCQQuestions(assignment)}
+              {countQuestions(assignment, "mcq")}
             </p>
             <p>
               <strong>Coding: </strong>
-              {countCodingQuestions(assignment)}
+              {countQuestions(assignment, "coding")}
             </p>
 
             <p>
               <strong>Points: </strong>{" "}
-              {countMCQQuestions(assignment) * 5 +
-                countCodingQuestions(assignment) * 10}
+              {countQuestions(assignment, "mcq") * 5 +
+                countQuestions(assignment, "coding") * 10}
             </p>
           </div>
           <div className="assignment-details-btns">
             <Button
-              hidden={currentUser.role !== "admin"}
+              hidden={currentUser.role === Roles.USER}
               variant="outlined"
               onClick={() => {
                 dispatch(putSelectedQuestions(assignment.questions));
@@ -76,7 +67,7 @@ function AssignemntsList() {
             </Button>
             <Button
               variant="outlined"
-              hidden={currentUser.role !== "admin"}
+              hidden={currentUser.role === Roles.USER}
               onClick={() => {
                 dispatch(putSelectedQuestions(assignment.questions));
                 navigate(`/user/editAssignment/${assignment.id}`);
@@ -84,8 +75,11 @@ function AssignemntsList() {
             >
               Edit
             </Button>
-            <Button variant="outlined" hidden={currentUser.role === "admin"}>
-              Enroll
+            <Button
+              variant="outlined"
+              hidden={currentUser.role === Roles.ADMIN}
+            >
+              {userChoice == "enroll" ? "Enroll" : "Attempt"}
             </Button>
           </div>
         </div>
@@ -93,5 +87,15 @@ function AssignemntsList() {
     </Box>
   );
 }
-
-export default AssignemntsList;
+AssignmentsList.propTypes = {
+  assignmentsList: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      questions: PropTypes.arrayOf(PropTypes.object.isRequired),
+    })
+  ).isRequired,
+  userChoice: PropTypes.oneOf(["enroll", "attempt"]).isRequired,
+};
+export default AssignmentsList;

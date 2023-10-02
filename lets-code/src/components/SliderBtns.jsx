@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-
+import { PropTypes } from "prop-types";
 function SliderBtns({ next, prev, data, showNext, showPrev }) {
   return (
     <div className="slider-btns">
@@ -26,4 +26,11 @@ function SliderBtns({ next, prev, data, showNext, showPrev }) {
     </div>
   );
 }
+SliderBtns.propTypes = {
+  next: PropTypes.func,
+  prev: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired,
+  showNext: PropTypes.bool.isRequired,
+  showPrev: PropTypes.bool.isRequired,
+};
 export default SliderBtns;

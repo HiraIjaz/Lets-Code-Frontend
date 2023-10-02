@@ -1,19 +1,11 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { TextField, Button, Box, Link, Alert, AlertTitle } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SliderBtns from "../../components/SliderBtns";
-// eslint-disable-next-line react/prop-types
+import PropTypes from "prop-types";
+
 function AssignmentDetails({ data, next, prev }) {
   const validationSchema = Yup.object({
-    title: Yup.string()
-      .required("Title is required")
-      .test(
-        "len",
-        "Title cannot containt more then 100 characters",
-        (val) => val.length <= 100
-      ),
+    title: Yup.string().required("Title is required").max(100),
   });
   return (
     <Formik
@@ -64,4 +56,9 @@ function AssignmentDetails({ data, next, prev }) {
     </Formik>
   );
 }
+AssignmentDetails.propTypes = {
+  data: PropTypes.object.isRequired,
+  next: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired,
+};
 export default AssignmentDetails;

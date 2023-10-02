@@ -96,3 +96,13 @@ li{
     display: flex;
     flex-direction: column;
 }
+
+.enrollment-container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  align-content: space-between;
+  width: 100%;
+  margin: 10;
+  background-color: rgba(134, 154, 186, 0.5)
+}

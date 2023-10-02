@@ -1,9 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const LOGIN_API_URL = 'http://127.0.0.1:8000/api/login/'
-const UPDATE_API_URL =  'http://127.0.0.1:8000/api/update/'
-const REGSITER_API_URL =  'http://127.0.0.1:8000/api/register/'
-
+import { LOGIN_API_URL,REGSITER_API_URL,UPDATE_API_URL } from "../../urls";
+import { HEADERS } from "../../utils";
 function userFromLocalStorage(){
   const user = localStorage.getItem("user");
   if (user){
@@ -24,7 +22,6 @@ export const login = createAsyncThunk('user/login', async (credentials) => {
     const response = await axios.post(LOGIN_API_URL, credentials)
     localStorage.setItem('access_token',response.data.access_token)
     localStorage.setItem('user',JSON.stringify(response.data))
-    console.log(response.data)
     return response.data
   }
   catch(error){
@@ -45,15 +42,11 @@ export const register = createAsyncThunk('user/regsiter', async (credentials) =>
 export const updateProfile = createAsyncThunk('user/update', async (userData) => {
 
   try{
-    const HEADERS = {
-   'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-    };
     const response = await axios.put(UPDATE_API_URL, userData,{ headers: HEADERS })
     localStorage.setItem('user',JSON.stringify(response.data))
     return response.data
   }
   catch(error){
-    console.log(error.detail)
     return Promise.reject(error.message);
   }
 });
@@ -69,6 +62,7 @@ const userSlice = createSlice({
         ...state,
       user : null,
       error: null,
+      loading: false,
       accessToken : null,
       refreshToken :null,
       success: 'User logged out'  
@@ -110,7 +104,6 @@ const userSlice = createSlice({
       };
       })
       .addCase(updateProfile.fulfilled , (state,action) => {
-        console.log(action.payload)
         return {
         ...state,
         loading: false,
@@ -120,8 +113,6 @@ const userSlice = createSlice({
       };
       })
        .addCase(updateProfile.rejected , (state,action) => {
-        console.log(action.payload)
-        console.log(action.error)
         return {
         ...state,
         loading: false,
@@ -130,7 +121,6 @@ const userSlice = createSlice({
       };
       })
       .addCase(register.fulfilled , (state,action) => {
-        console.log(action.payload)
         return {
         ...state,
         loading: false,
@@ -140,8 +130,6 @@ const userSlice = createSlice({
       };
     })
     .addCase(register.rejected , (state,action) => {
-        console.log(action.payload)
-        console.log(action.error)
         return {
         ...state,
         loading: false,

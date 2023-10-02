@@ -30,13 +30,11 @@ function UserProfileForm() {
 
   const handleSubmit = (values, { setSubmitting }) => {
     dispatch(updateProfile(values))
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         setSubmitting(false);
         setEditForm(false);
       })
-      .catch((error) => {
-        console.error(error.response.data);
+      .catch(() => {
         setSubmitting(false);
       });
   };

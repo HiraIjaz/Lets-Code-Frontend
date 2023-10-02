@@ -1,35 +1,31 @@
 import { IconButton } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import QuestionDetails from "./QuestionDetails";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import {
-  questionAdded,
-  questionRemoved,
+  getSelectedQuestions,
+  addQuestion,
+  removeQuestion,
 } from "../features/questions/questionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { getSelectedQuestions } from "../features/questions/questionSlice";
-
-function isQuestionSelected(questionList, q) {
-  return questionList.some((question) => question.id === q.id);
-}
-
-// eslint-disable-next-line react/prop-types
-function MultipleChoiceQuestion({ question }) {
+import QuestionDetails from "./QuestionDetails";
+import { isQuestionSelected } from "../utils";
+import PropTypes from "prop-types";
+function Question({ question }) {
   const dispatch = useDispatch();
-
   const selectedQuestions = useSelector(getSelectedQuestions);
   const [isSelected, setIsSelected] = useState(
     isQuestionSelected(selectedQuestions, question)
   );
 
   function handleAddQuestion() {
-    dispatch(questionAdded({ question }));
+    if (!isSelected) {
+      dispatch(addQuestion({ question }));
+    }
   }
   function handleRemoveQuestion() {
-    console.log("inside here");
-    dispatch(questionRemoved({ question }));
+    dispatch(removeQuestion({ question }));
   }
   return (
     <li>
@@ -64,4 +60,11 @@ function MultipleChoiceQuestion({ question }) {
   );
 }
 
-export default MultipleChoiceQuestion;
+Question.propTypes = {
+  question: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+  }).isRequired,
+};
+export default Question;

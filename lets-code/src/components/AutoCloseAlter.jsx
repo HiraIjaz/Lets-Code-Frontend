@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Alert, AlertTitle } from "@mui/material";
 import { capitalizeFirstLetter } from "../utils"; // Adjust the import path as needed
+import PropTypes from "prop-types";
 
-// eslint-disable-next-line react/prop-types
 function AutoCloseAlert({ message, alertType, time }) {
   const [open, setOpen] = useState(true);
 
@@ -32,4 +32,9 @@ function AutoCloseAlert({ message, alertType, time }) {
   );
 }
 
+AutoCloseAlert.propTypes = {
+  message: PropTypes.string.isRequired,
+  alertType: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+};
 export default AutoCloseAlert;

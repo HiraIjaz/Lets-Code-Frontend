@@ -6,13 +6,9 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import QuestionsList from "../questions/QuestionsList";
 import { useState } from "react";
 import SliderBtns from "../../components/SliderBtns";
+import PropTypes from "prop-types";
 
-// eslint-disable-next-line react/prop-types
 function AddQuestions({ data, next, prev }) {
-  const validationSchema = Yup.object({
-    q: Yup.string().required("Question is required"),
-  });
-
   return (
     <>
       <SliderBtns
@@ -26,5 +22,9 @@ function AddQuestions({ data, next, prev }) {
     </>
   );
 }
-
+AddQuestions.propTypes = {
+  data: PropTypes.object.isRequired,
+  next: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired,
+};
 export default AddQuestions;

@@ -3,9 +3,9 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
+import Roles from "../roles";
 import Divider from "@mui/material/Divider";
-import { Button, colors } from "@mui/material";
+import { Button } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from "@mui/icons-material/Home";
@@ -16,6 +16,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser, logout } from "../features/users/usersSlice";
 import { routes } from "../routes";
 import BallotIcon from "@mui/icons-material/Ballot";
+import EditNotificationsIcon from "@mui/icons-material/EditNotifications";
+import {
+  fetchPendingEnrollments,
+  fetchUserEnrollments,
+} from "../features/enrollments/enrollmentsSlice";
 
 export default function AccountMenu() {
   const navigate = useNavigate();
@@ -37,9 +42,9 @@ export default function AccountMenu() {
             onClick={handleClick}
             size="small"
             sx={{ ml: 2 }}
-            aria-controls={open ? "account-menu" : undefined}
+            aria-controls={open ? "account-menu" : null}
             aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
+            aria-expanded={open ? "true" : null}
           >
             <Avatar sx={{ width: 32, height: 32 }}>
               {currentUser.username[0].toUpperCase()}
@@ -99,25 +104,34 @@ export default function AccountMenu() {
         >
           <Person2Icon /> Profile
         </MenuItem>
-        {currentUser.role !== "admin" && (
-          <MenuItem onClick={handleClose}>
-            <AssignmentIcon /> My Assignments
-          </MenuItem>
-        )}
-
         <MenuItem
           onClick={() => {
-            {
-              handleClose();
-              currentUser.role === "admin"
-                ? navigate(routes.adminBasePage)
-                : navigate(routes.userBasePage);
+            handleClose();
+            if (currentUser.role === Roles.ADMIN) {
+              navigate(routes.adminBasePage);
+            } else {
+              dispatch(fetchUserEnrollments());
+              navigate(routes.userAssignments);
             }
           }}
         >
-          <HomeIcon /> Home
+          <AssignmentIcon /> My Assignments
         </MenuItem>
-        {currentUser.role === "admin" && (
+
+        {currentUser.role === Roles.USER && (
+          <MenuItem
+            onClick={() => {
+              {
+                handleClose();
+                navigate(routes.userBasePage);
+              }
+            }}
+          >
+            <HomeIcon /> Home
+          </MenuItem>
+        )}
+
+        {currentUser.role === Roles.ADMIN && (
           <MenuItem
             onClick={() => {
               handleClose();
@@ -127,13 +141,25 @@ export default function AccountMenu() {
             <BallotIcon /> Question Bank
           </MenuItem>
         )}
+        {currentUser.role === Roles.ADMIN && (
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              dispatch(fetchPendingEnrollments());
+              navigate(routes.enrollmentRequests);
+            }}
+          >
+            <EditNotificationsIcon /> Enrollemt Requests
+          </MenuItem>
+        )}
         <Divider />
         <MenuItem
           onClick={() => {
             handleClose();
             dispatch(logout());
-
-            navigate(routes.home);
+            if (!currentUser) {
+              navigate(routes.home);
+            }
           }}
         >
           <LogoutIcon />

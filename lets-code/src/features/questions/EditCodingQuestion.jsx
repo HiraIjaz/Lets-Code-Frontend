@@ -19,7 +19,6 @@ function EditCodingQuestion() {
         navigate(routes.questionBank);
       }
     });
-    console.log(values);
   };
   let { id } = useParams();
   const question = useSelector((state) => getQuestionById(state, parseInt(id)));

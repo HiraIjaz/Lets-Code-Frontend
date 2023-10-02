@@ -1,17 +1,19 @@
 import { TextField, Button, Box, Link, Alert, AlertTitle } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
-import AssignemntsList from "../features/assignments/AssignemntsList";
+import AssignmentsList from "../features/assignments/AssignmentsList";
 import { routes } from "../routes";
 import AutoCloseAlert from "../components/AutoCloseAlter";
 import { useSelector } from "react-redux";
-import { getSuccessMessage } from "../features/assignments/assignemntSlice";
+import { getSuccessMessage } from "../features/assignments/assignmentSlice";
+import { getAssignments } from "../features/assignments/assignmentSlice";
 import { useState } from "react";
-function AdminBase() {
-  const navigate = useNavigate();
-  const success = useSelector(getSuccessMessage);
 
-  console.log(success);
+function AdminBase() {
+  console.log("here");
+  const navigate = useNavigate();
+  const assignmentsList = useSelector(getAssignments);
+  const success = useSelector(getSuccessMessage);
   function handleCreateNewAssignmentClick() {
     navigate(routes.createAssignment);
   }
@@ -52,7 +54,10 @@ function AdminBase() {
             ></AutoCloseAlert>
           )}
           <section id="assignmentsList">
-            <AssignemntsList />
+            <AssignmentsList
+              assignmentsList={assignmentsList}
+              userChoice="enroll"
+            />
           </section>
         </div>
       </Box>

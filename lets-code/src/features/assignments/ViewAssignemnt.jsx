@@ -3,7 +3,7 @@ import AllQuestions from "../questions/AllQuestions";
 import { useSelector } from "react-redux";
 import { getSelectedQuestions } from "../questions/questionSlice";
 import { useParams } from "react-router-dom";
-import { getAssignmentById } from "./assignemntSlice";
+import { getAssignmentById } from "./assignmentSlice";
 import QuestionDetails from "../../components/QuestionDetails";
 
 function ViewAssignment() {
@@ -12,7 +12,6 @@ function ViewAssignment() {
   const assignment = useSelector((state) =>
     getAssignmentById(state, parseInt(id, 0))
   );
-  console.log(assignment);
   const questionsList = useSelector(getSelectedQuestions);
   return (
     <Box

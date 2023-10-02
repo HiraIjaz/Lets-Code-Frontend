@@ -1,27 +1,24 @@
-import { accordionActionsClasses } from '@mui/material';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
-const QUESTIONS_API='http://127.0.0.1:8000/api/questions/'
+import { QUESTIONS_API } from '../../urls';
+import { HEADERS } from '../../utils';
 
  
 export const fetchQuestions = createAsyncThunk('questions/fetchQuestions', async () => {
   const response = await axios.get(QUESTIONS_API);
   return response.data;
 });
+
 export const createQuestion = createAsyncThunk(
   "questions/create",
   async (data) => {
     try {
-      const HEADERS = {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      };
       const response = await axios.post(QUESTIONS_API, data, {
         headers: HEADERS,
       });
 
       return response.data;
     } catch (error) {
-      console.log(error.detail);
       return Promise.reject(error.message);
     }
   }
@@ -29,19 +26,12 @@ export const createQuestion = createAsyncThunk(
 export const editQuestion = createAsyncThunk(
   "questions/edit",
   async (data) => {
-    
     try {
-      const HEADERS = {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      };
       const response = await axios.put(`${QUESTIONS_API}${encodeURIComponent(data.id)}/`, data, {
         headers: HEADERS,
       });
-      console.log(response.data)
-
       return response.data;
     } catch (error) {
-      console.log(error.detail);
       return Promise.reject(error.message);
     }
   }
@@ -50,16 +40,12 @@ export const deleteQuestion = createAsyncThunk(
   "questions/delete",
   async (data) => {
     try {
-      const HEADERS = {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      };
       const response = await axios.delete(`${QUESTIONS_API}${encodeURIComponent(data.id)}/`, data, {
         headers: HEADERS,
       });
 
       return response.data;
     } catch (error) {
-      console.log(error.detail);
       return Promise.reject(error.message);
     }
   }
@@ -74,16 +60,15 @@ const questionsSlice = createSlice({
     success:null
   },
   reducers: {
-    questionAdded: (state, action) => {
+    addQuestion: (state, action) => {
       state.selectedQuestions.push(action.payload.question);
     },
-    questionRemoved: (state, action) => {
+    removeQuestion: (state, action) => {
        const questionIdToRemove = action.payload.question.id;
       state.selectedQuestions = state.selectedQuestions.filter(
          (question) => question.id !== questionIdToRemove)
     },
     putSelectedQuestions: (state,action)=>{
-      console.log(action.payload)
        return {
     ...state,
     selectedQuestions: action.payload
@@ -113,7 +98,6 @@ const questionsSlice = createSlice({
       .addCase(createQuestion.fulfilled, (state, action) => {
         state.loading = 'succeeded';
         state.success='Question created'
-        console.log(action.payload)
         state.questions.push(action.payload);
       })
       .addCase(createQuestion.rejected, (state, action) => {
@@ -163,6 +147,7 @@ export default questionsSlice.reducer;
 
 // Selectors
 export const selectQuestions = (state) => state.questions.questions;
+export const selectAllQuestions = (state) => state.questions.allQuestions;
 export const selectQuestionsLoading = (state) => state.questions.loading;
 export const selectQuestionsError = (state) => state.questions.error;
 export const getSelectedQuestions = (state) =>state.questions.selectedQuestions;
@@ -174,4 +159,4 @@ export const getQuestionById = (state, questionId) => {
 export const getSuccessMessage=(state) => state.questions.success
 
 //actions
-export const {questionAdded,questionRemoved,putSelectedQuestions} = questionsSlice.actions;
+export const {addQuestion,removeQuestion,putSelectedQuestions} = questionsSlice.actions;

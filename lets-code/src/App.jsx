@@ -1,8 +1,8 @@
+import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Layout from "./components/Layout";
 import LoginForm from "./features/users/UserLoginForm";
 import UserProfileForm from "./features/users/UserProfileForm";
-import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import UserBasePage from "./pages/UserBase";
 import Unauthorized from "./pages/Unauthorized";
@@ -16,6 +16,10 @@ import CreateQuestion from "./features/questions/CreateQuestion";
 import QuestionBank from "./pages/QuestionBank";
 import EditCodingQuestion from "./features/questions/EditCodingQuestion";
 import EditMcQuestion from "./features/questions/EditMcQuestion";
+import EnrollmentRequests from "./features/enrollments/EnrollmentRequests";
+import UserAssignments from "./features/assignments/userAssignments";
+import Roles from "./roles";
+
 function App() {
   return (
     <Routes>
@@ -23,67 +27,76 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="user">
-          <Route path="UserBasePage" element={<UserBasePage />} />
+          <Route path="user-base-page" element={<UserBasePage />} />
           <Route path="login" element={<LoginForm />} />
           <Route path="signup" element={<UserCreationForm />} />
-          <Route path="profileInfo" element={<UserProfileForm />} />
+          <Route path="profile-info" element={<UserProfileForm />} />
+          <Route path="my-assignments" element={<UserAssignments />} />
           <Route
-            path="adminBase"
+            path="admin-base"
             element={
-              <PrivateRoute allowedRole={"admin"}>
+              <PrivateRoute allowedRole={Roles.ADMIN}>
                 <AdminBase />
               </PrivateRoute>
             }
           />
           <Route
-            path="createAssignment"
+            path="create-assignment"
             element={
-              <PrivateRoute allowedRole={"admin"}>
+              <PrivateRoute allowedRole={Roles.ADMIN}>
                 <CreateAssignment />
               </PrivateRoute>
             }
           />
           <Route
-            path="createQuestion"
+            path="create-question"
             element={
-              <PrivateRoute allowedRole={"admin"}>
+              <PrivateRoute allowedRole={Roles.ADMIN}>
                 <CreateQuestion />
               </PrivateRoute>
             }
           />
           <Route
-            path="editAssignment/:id"
+            path="edit-assignment/:id"
             element={
-              <PrivateRoute allowedRole={"admin"}>
+              <PrivateRoute allowedRole={Roles.ADMIN}>
                 <EditAssignment />
               </PrivateRoute>
             }
           />
           <Route
-            path="editCodingQuestion/:id"
+            path="edit-coding-question/:id"
             element={
-              <PrivateRoute allowedRole={"admin"}>
+              <PrivateRoute allowedRole={Roles.ADMIN}>
                 <EditCodingQuestion />
               </PrivateRoute>
             }
           />
           <Route
-            path="editMcQuestion/:id"
+            path="edit-mcq-question/:id"
             element={
-              <PrivateRoute allowedRole={"admin"}>
+              <PrivateRoute allowedRole={Roles.ADMIN}>
                 <EditMcQuestion />
               </PrivateRoute>
             }
           />
           <Route
-            path="questionBank/"
+            path="question-bank/"
             element={
-              <PrivateRoute allowedRole={"admin"}>
+              <PrivateRoute allowedRole={Roles.ADMIN}>
                 <QuestionBank />
               </PrivateRoute>
             }
           />
-          <Route path="viewAssignment/:id" element={<ViewAssignmnet />} />
+          <Route
+            path="enrollmet-requests/"
+            element={
+              <PrivateRoute allowedRole={Roles.ADMIN}>
+                <EnrollmentRequests />
+              </PrivateRoute>
+            }
+          />
+          <Route path="view-assignment/:id" element={<ViewAssignmnet />} />
         </Route>
       </Route>
     </Routes>

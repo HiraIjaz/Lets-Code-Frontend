@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
-const ASSIGNMENTS_API = "http://localhost:8000/api/assignments/";
-const CREATE_ASSIGNMENT_API = "http://localhost:8000/api/create-assignment/";
-const EDIT_ASSIGNMENT_API = "http://localhost:8000/api/edit-assignment/";
+import {
+  ASSIGNMENTS_API,
+  CREATE_ASSIGNMENT_API,
+  EDIT_ASSIGNMENT_API,
+} from "../../urls";
+import { HEADERS } from "../../utils";
 
 const initialState = {
   assignments: [
@@ -31,13 +33,6 @@ const initialState = {
         },
       ],
     },
-    // {
-    //   id: 1,
-    //   title: "Second Dummy Assignment",
-    //   description:
-    //     "This is second dummy assignemnts, made just to show some more date on screen",
-    //   questions: [1, 5, 9],
-    // },
   ],
   loading: "idle",
   error: null,
@@ -56,16 +51,12 @@ export const createAssignment = createAsyncThunk(
   "assignments/create",
   async (data) => {
     try {
-      const HEADERS = {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      };
       const response = await axios.post(CREATE_ASSIGNMENT_API, data, {
         headers: HEADERS,
       });
 
       return response.data;
     } catch (error) {
-      console.log(error.detail);
       return Promise.reject(error.message);
     }
   }
@@ -74,9 +65,6 @@ export const updateAssignment = createAsyncThunk(
   "assignments/update",
   async (data) => {
     try {
-      const HEADERS = {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      };
       const response = await axios.put(
         `${EDIT_ASSIGNMENT_API}${encodeURIComponent(data.id)}/`,
         data,
@@ -84,7 +72,6 @@ export const updateAssignment = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      console.log(error.detail);
       return Promise.reject(error.message);
     }
   }
@@ -158,4 +145,5 @@ export const getAssignmentById = (state, assignmentId) => {
     (assignment) => assignment.id === assignmentId
   );
 };
+
 export const getSuccessMessage = (state) => state.assignments.success;

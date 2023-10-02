@@ -1,4 +1,5 @@
-function QuestionDetails({ question }) {
+import PropTypes from "prop-types";
+const QuestionDetails = ({ question }) => {
   return (
     <>
       {question.type === "coding" ? (
@@ -44,6 +45,14 @@ function QuestionDetails({ question }) {
       )}
     </>
   );
-}
+};
+
+QuestionDetails.propTypes = {
+  question: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default QuestionDetails;

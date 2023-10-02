@@ -1,6 +1,6 @@
-import { Step, StepLabel, Stepper, Box, Button } from "@mui/material";
+import { Step, StepLabel, Box, Button } from "@mui/material";
 import { useState } from "react";
-import MyStepper from "../../components/MyStepper";
+import Stepper from "../../components/Stepper";
 
 function CreateAssignment() {
   const [data, setData] = useState({
@@ -41,7 +41,7 @@ function CreateAssignment() {
         backgroundColor="rgba(111, 146, 205, 0.5)"
       >
         <h2>New Assignmnet </h2>
-        <MyStepper
+        <Stepper
           activeStep={activeStep}
           data={data}
           next={nextStep}

@@ -113,12 +113,7 @@ function LoginForm() {
                   className="error"
                 />
               </div>
-              <Button
-                sx={{ mt: 2 }}
-                type="submit"
-                variant="contained"
-                disabled={loading}
-              >
+              <Button sx={{ mt: 2 }} type="submit" variant="contained">
                 Login
               </Button>
             </Form>

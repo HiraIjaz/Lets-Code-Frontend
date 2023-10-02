@@ -78,42 +78,37 @@ function QuestionBank() {
           )}
           <section id="assignmentsList">
             {questionsList.map((question) => {
-              if (question.isDeleted === false) {
-                return (
-                  <div className="question-container" key={question.id}>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      sx={{ mb: 2, ml: 2 }}
-                      onClick={() => {
-                        dispatch(deleteQuestion(question));
-                      }}
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      variant="contained"
-                      sx={{ mb: 2, ml: 2 }}
-                      onClick={() => {
-                        {
-                          question.type === "coding"
-                            ? navigate(
-                                `${routes.editcodingQuestion}/${question.id}`
-                              )
-                            : navigate(
-                                `${routes.editmcQuestion}/${question.id}`
-                              );
-                        }
-                      }}
-                    >
-                      Edit
-                    </Button>
+              return (
+                <div className="question-container" key={question.id}>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    sx={{ mb: 2, ml: 2 }}
+                    onClick={() => {
+                      dispatch(deleteQuestion(question));
+                    }}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{ mb: 2, ml: 2 }}
+                    onClick={() => {
+                      {
+                        question.type === "coding"
+                          ? navigate(
+                              `${routes.editcodingQuestion}/${question.id}`
+                            )
+                          : navigate(`${routes.editmcQuestion}/${question.id}`);
+                      }
+                    }}
+                  >
+                    Edit
+                  </Button>
 
-                    <QuestionDetails question={question} />
-                  </div>
-                );
-              }
-              return null; // Add this to return nothing when the condition is not met
+                  <QuestionDetails question={question} />
+                </div>
+              );
             })}
           </section>
         </div>

@@ -7,7 +7,7 @@ import { Button, Box, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../routes";
 
-const MCQForm = ({ onSubmit }) => {
+const MCQForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,8 +39,6 @@ const MCQForm = ({ onSubmit }) => {
     onSubmit: (values) => {
       dispatch(createQuestion(values));
       navigate(routes.questionBank);
-
-      console.log(values);
     },
   });
 

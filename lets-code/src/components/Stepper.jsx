@@ -1,15 +1,13 @@
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
+import { Step } from "@mui/material";
+import { StepLabel } from "@mui/material";
 import AssignmentDetails from "../features/assignments/AssignmentDetails";
 import AddQuestions from "../features/assignments/AddQuestions";
-import AssignemntPreview from "../features/assignments/AssignemntPreview";
+import AssignmentPreview from "../features/assignments/AssignmentPreview";
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { getSelectedQuestions } from "../features/questions/questionSlice";
-
-// eslint-disable-next-line react/prop-types
-function MyStepper({ activeStep, data, next, prev }) {
+import { PropTypes } from "prop-types";
+function Stepper({ activeStep, data, next, prev }) {
   const selectedQuestionsList = useSelector(getSelectedQuestions);
   const steps = [
     {
@@ -23,7 +21,7 @@ function MyStepper({ activeStep, data, next, prev }) {
     {
       label: "Review",
       component: (
-        <AssignemntPreview
+        <AssignmentPreview
           data={data}
           next={next}
           prev={prev}
@@ -59,5 +57,10 @@ function MyStepper({ activeStep, data, next, prev }) {
     </div>
   );
 }
-
-export default MyStepper;
+Stepper.propTypes = {
+  activeStep: PropTypes.number.isRequired,
+  data: PropTypes.object.isRequired,
+  next: PropTypes.func,
+  prev: PropTypes.func.isRequired,
+};
+export default Stepper;
