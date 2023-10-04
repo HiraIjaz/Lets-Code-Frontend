@@ -69,6 +69,13 @@ function QuestionBank() {
               time="2"
             ></AutoCloseAlert>
           )}
+          {success === "Question deleted" && (
+            <AutoCloseAlert
+              message={success}
+              alertType="success"
+              time="2"
+            ></AutoCloseAlert>
+          )}
           {success === "Question edited" && (
             <AutoCloseAlert
               message={success}

@@ -145,5 +145,6 @@ export const getAssignmentById = (state, assignmentId) => {
     (assignment) => assignment.id === assignmentId
   );
 };
+export const getAssignmentsError = (state) => state.assignments.error
 
 export const getSuccessMessage = (state) => state.assignments.success;

@@ -1,12 +1,11 @@
-import { Step } from "@mui/material";
-import { StepLabel } from "@mui/material";
 import AssignmentDetails from "../features/assignments/AssignmentDetails";
 import AddQuestions from "../features/assignments/AddQuestions";
 import AssignmentPreview from "../features/assignments/AssignmentPreview";
-import { Box } from "@mui/material";
+import { Box, Step, StepLabel } from "@mui/material";
 import { useSelector } from "react-redux";
 import { getSelectedQuestions } from "../features/questions/questionSlice";
 import { PropTypes } from "prop-types";
+import MuiStepper from "@mui/material/Stepper";
 function Stepper({ activeStep, data, next, prev }) {
   const selectedQuestionsList = useSelector(getSelectedQuestions);
   const steps = [
@@ -32,13 +31,13 @@ function Stepper({ activeStep, data, next, prev }) {
   ];
   return (
     <div>
-      <Stepper activeStep={activeStep} alternativeLabel>
+      <MuiStepper activeStep={activeStep} alternativeLabel>
         {steps.map((step) => (
           <Step key={step.label}>
             <StepLabel>{step.label}</StepLabel>
           </Step>
         ))}
-      </Stepper>
+      </MuiStepper>
       <Box
         sx={{
           "& .MuiTextField-root": { m: 1, width: "25ch" },
@@ -60,7 +59,8 @@ function Stepper({ activeStep, data, next, prev }) {
 Stepper.propTypes = {
   activeStep: PropTypes.number.isRequired,
   data: PropTypes.object.isRequired,
-  next: PropTypes.func,
+  next: PropTypes.func.isRequired,
   prev: PropTypes.func.isRequired,
 };
+
 export default Stepper;

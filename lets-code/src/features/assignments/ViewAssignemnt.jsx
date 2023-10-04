@@ -1,7 +1,6 @@
 import { Box, Button } from "@mui/material";
 import AllQuestions from "../questions/AllQuestions";
 import { useSelector } from "react-redux";
-import { getSelectedQuestions } from "../questions/questionSlice";
 import { useParams } from "react-router-dom";
 import { getAssignmentById } from "./assignmentSlice";
 import QuestionDetails from "../../components/QuestionDetails";
@@ -12,7 +11,7 @@ function ViewAssignment() {
   const assignment = useSelector((state) =>
     getAssignmentById(state, parseInt(id, 0))
   );
-  const questionsList = useSelector(getSelectedQuestions);
+  const questionsList = assignment.questions;
   return (
     <Box
       sx={{

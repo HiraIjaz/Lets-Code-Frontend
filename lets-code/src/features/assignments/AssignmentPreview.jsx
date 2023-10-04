@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import SliderBtns from "../../components/SliderBtns";
 import { useNavigate } from "react-router-dom";
-import { createAssignment } from "./assignmentSlice";
+import { createAssignment, getAssignmentsError } from "./assignmentSlice";
 import { routes } from "../../routes";
 import PropTypes from "prop-types";
+
 export function AssignmentPreview({ data, next, prev, questionsList }) {
   const dispath = useDispatch();
   const navigate = useNavigate();
-  const error = useSelector((state) => state.assignmnets.error);
+  const error = useSelector(getAssignmentsError);
 
   function handleSaveAssignment(data) {
     const assignmentData = {
@@ -47,10 +48,5 @@ export function AssignmentPreview({ data, next, prev, questionsList }) {
     </>
   );
 }
-AssignmentPreview.propTypes = {
-  data: PropTypes.object.isRequired,
-  next: PropTypes.func.isRequired,
-  prev: PropTypes.func.isRequired,
-  questionsList: PropTypes.array.isRequired,
-};
+
 export default AssignmentPreview;

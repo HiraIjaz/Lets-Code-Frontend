@@ -15,6 +15,7 @@ function CreateAssignment() {
       setActiveStep((currentStep) => currentStep + 1);
     }
   }
+
   function prevStep(newData) {
     if (activeStep > 0) {
       setData((prev) => ({ ...prev, ...newData }));

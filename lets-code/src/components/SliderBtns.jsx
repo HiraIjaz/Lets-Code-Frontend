@@ -27,7 +27,7 @@ function SliderBtns({ next, prev, data, showNext, showPrev }) {
   );
 }
 SliderBtns.propTypes = {
-  next: PropTypes.func,
+  next: PropTypes.func.isRequired,
   prev: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
   showNext: PropTypes.bool.isRequired,

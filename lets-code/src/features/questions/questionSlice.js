@@ -80,55 +80,65 @@ const questionsSlice = createSlice({
     builder
       .addCase(fetchQuestions.pending, (state) => {
         state.loading = 'loading';
-        state.success= null
-        state.error=null
+        state.questions = null;
+        state.success= null;
+        state.error=null;
       })
       .addCase(fetchQuestions.fulfilled, (state, action) => {
         state.loading = 'succeeded';
         state.success= 'Questions fetched'
+        state.error = null;
         state.questions = action.payload;
       })
       .addCase(fetchQuestions.rejected, (state, action) => {
         state.loading = 'failed';
+        state.success = null;
         state.error = action.error.message;
       })
        .addCase(createQuestion.pending, (state) => {
         state.loading = 'loading';
+        state.success= null;
+        state.error=null;
       })
       .addCase(createQuestion.fulfilled, (state, action) => {
         state.loading = 'succeeded';
-        state.success='Question created'
+        state.success='Question created';
+        state.error=null;
         state.questions.push(action.payload);
       })
       .addCase(createQuestion.rejected, (state, action) => {
         state.loading = 'failed';
+        state.success = null;
         state.error = action.error.message;
       })
       .addCase(deleteQuestion.pending, (state) => {
         state.loading = 'loading';
-        state.success = null;
+        state.success= null
+        state.error=null
       })
       .addCase(deleteQuestion.fulfilled, (state, action) => {
         state.loading = 'succeeded';
         state.success='Question deleted'
+        state.error=null;
         const deletedQuestion = action.payload;
-        state.questions = state.questions.map((question) =>
-          question.id === deletedQuestion.id
-            ? deleteQuestion
-            : question
+        state.questions = state.questions.filter((question) =>
+          question.id !== deletedQuestion.id
         );
       })
       .addCase(deleteQuestion.rejected, (state, action) => {
         state.loading = 'failed';
+        state.success=null;
         state.error = action.error.message;
       })
       .addCase(editQuestion.pending, (state) => {
         state.loading = 'loading';
         state.success = null;
+        state.error=null
       })
       .addCase(editQuestion.fulfilled, (state, action) => {
         state.loading = 'succeeded';
         state.success='Question edited'
+        state.error = null
         const editedQuestion = action.payload;
         state.questions = state.questions.map((question) =>
           question.id === editedQuestion.id
@@ -138,6 +148,7 @@ const questionsSlice = createSlice({
       })
       .addCase(editQuestion.rejected, (state, action) => {
         state.loading = 'failed';
+        state.success=null;
         state.error = action.error.message;
       });
   },
