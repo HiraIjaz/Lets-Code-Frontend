@@ -19,7 +19,7 @@ import EditMcQuestion from "./features/questions/EditMcQuestion";
 import EnrollmentRequests from "./features/enrollments/EnrollmentRequests";
 import UserAssignments from "./features/assignments/UserAssignments";
 import Roles from "./roles";
-import AttemptAssignment from "./features/assignments/AtemptAssignment";
+import AttemptAssignment from "./features/assignments/AttemptAssignment";
 import ScorePage from "./pages/ScorePage";
 import AssignmentReports from "./features/assignments/AssignmentReports";
 function App() {

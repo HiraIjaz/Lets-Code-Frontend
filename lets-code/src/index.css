@@ -61,8 +61,12 @@ li{
   
   margin-bottom: 10px;
   padding: 10px;
-  background-color:rgba(134, 154, 186, 0.5) ;
+  background-color:#becce6 ;
   
+}
+.question-answer-container{
+  width: 100%;
+
 }
 
 .Add-Remove-Btns{
@@ -75,7 +79,7 @@ li{
   justify-content: space-around;
 }
 .assignment-container {
-  border: 1px solid #4882b1;
+  border: 1px solid #becce6 ;
   padding: 16px; 
   margin-bottom: 16px; 
 }
@@ -104,5 +108,5 @@ li{
   align-content: space-between;
   width: 100%;
   margin: 10;
-  background-color: rgba(134, 154, 186, 0.5)
+  background-color: #becce6 
 }

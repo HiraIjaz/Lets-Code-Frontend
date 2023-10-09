@@ -27,6 +27,8 @@ const CodingQuestionForm = () => {
       question_text: "",
       public_test_cases: [{ input: "", output: "" }],
       private_test_cases: [{ input: "", output: "" }],
+      function_name: "",
+      parameters: "",
     },
     type: "coding",
   };
@@ -35,6 +37,8 @@ const CodingQuestionForm = () => {
     title: Yup.string().required("Title is required"),
     data: Yup.object().shape({
       question_text: Yup.string().required("Question text is required"),
+      function_name: Yup.string().required("Function name is required"),
+      parameters: Yup.string().required("parameters are required"),
       public_test_cases: Yup.array().of(
         Yup.object().shape({
           input: Yup.string().required("Input is required"),
@@ -97,6 +101,33 @@ const CodingQuestionForm = () => {
                 as="textarea"
                 id="data.question_text"
                 name="data.question_text"
+              />
+              <label htmlFor="data.function_name">
+                <h4>Function name</h4>
+              </label>
+              <ErrorMessage
+                name="data.function_name"
+                component="div"
+                className="error-message"
+              />
+              <Field
+                as="textarea"
+                id="data.function_name"
+                name="data.function_name"
+              />
+              <label htmlFor="data.parameters">
+                <h4>Parameters</h4>
+              </label>
+              <ErrorMessage
+                name="data.parameters"
+                component="div"
+                className="error-message"
+              />
+              <Field
+                as="textarea"
+                id="data.parameters"
+                name="data.parameters"
+                placeholder="enter parameter as comma seprated list(param1,param2...)"
               />
             </div>
             <br />

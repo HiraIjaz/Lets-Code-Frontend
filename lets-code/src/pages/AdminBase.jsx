@@ -4,16 +4,19 @@ import { useNavigate } from "react-router-dom";
 import AssignmentsList from "../features/assignments/AssignmentsList";
 import { routes } from "../routes";
 import AutoCloseAlert from "../components/AutoCloseAlter";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getSuccessMessage } from "../features/assignments/assignmentSlice";
 import { getAssignments } from "../features/assignments/assignmentSlice";
 import { useState } from "react";
+import { emptySelectedQuestion } from "../features/questions/questionSlice";
 
 function AdminBase() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const assignmentsList = useSelector(getAssignments);
   const success = useSelector(getSuccessMessage);
   function handleCreateNewAssignmentClick() {
+    dispatch(emptySelectedQuestion());
     navigate(routes.createAssignment);
   }
 

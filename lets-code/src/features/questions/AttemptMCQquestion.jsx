@@ -1,43 +1,13 @@
 import { Box, Button } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
-import { getAssignmentById } from "./assignmentSlice";
 import QuestionDetails from "../../components/QuestionDetails";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { CalculateScore } from "../../utils";
-import {
-  getUserEnrollments,
-  markEnrollment,
-} from "../enrollments/enrollmentsSlice";
+import { useState } from "react";
+import AutoCloseAlert from "../../components/AutoCloseAlter";
 import { routes } from "../../routes";
 
-function AttemptAssignment() {
-  let { id } = useParams();
-
-  const assignment = useSelector((state) =>
-    getAssignmentById(state, parseInt(id, 0))
-  );
-  const enrollments = useSelector(getUserEnrollments);
-  const currentEnrollment = enrollments.find(
-    (e) => e.assignment === parseInt(id)
-  );
-  const questionsList = assignment.questions.filter((q) => q.type === "mcq");
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  if (questionsList.length === 0) {
-    return null;
-  }
-
-  const initialValues = {
-    answers: questionsList.map((question) => ({
-      questionId: question.id,
-      answer: "",
-    })),
-  };
-
+function AttemptMCQquestions({ questionsList, setMcqAnswers, initialValues }) {
+  const [showAlert, setShowAlert] = useState(false);
   const validationSchema = Yup.object().shape({
     answers: Yup.array().of(
       Yup.object().shape({
@@ -46,7 +16,16 @@ function AttemptAssignment() {
       })
     ),
   });
+  const handleSubmit = (values) => {
+    setMcqAnswers(values);
+    console.log(values);
 
+    setShowAlert(true);
+
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 5000); // the alert after 5 seconds
+  };
   return (
     <Box
       sx={{
@@ -64,18 +43,7 @@ function AttemptAssignment() {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          const updatedData = {
-            ...currentEnrollment,
-            status: "attempted",
-            score: CalculateScore(values.answers, questionsList),
-          };
-          dispatch(markEnrollment(updatedData));
-          navigate(routes.scorePage, {
-            state: {
-              answers: values.answers,
-              questionList: questionsList,
-            },
-          });
+          handleSubmit(values);
         }}
       >
         {({ handleSubmit, values }) => (
@@ -104,13 +72,19 @@ function AttemptAssignment() {
               );
             })}
             <Button color="success" variant="contained" type="submit">
-              Submit
+              Save answers
             </Button>
           </Form>
         )}
       </Formik>
+      {showAlert && (
+        <AutoCloseAlert
+          message="Your answers have been submitted"
+          alertType="success"
+          time="5"
+        />
+      )}
     </Box>
   );
 }
-
-export default AttemptAssignment;
+export default AttemptMCQquestions;
