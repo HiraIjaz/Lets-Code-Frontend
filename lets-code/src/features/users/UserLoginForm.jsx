@@ -12,6 +12,7 @@ import {
   getSuccessMessage,
 } from "./usersSlice";
 import { useNavigate } from "react-router-dom";
+import { fetchUserEnrollments } from "../enrollments/enrollmentsSlice";
 
 function LoginForm() {
   const dispatch = useDispatch();
@@ -95,7 +96,7 @@ function LoginForm() {
                 <ErrorMessage
                   name="username"
                   component="div"
-                  className="error"
+                  className="error-message"
                 />
               </div>
               <div>
@@ -110,7 +111,7 @@ function LoginForm() {
                 <ErrorMessage
                   name="password"
                   component="div"
-                  className="error"
+                  className="error-message"
                 />
               </div>
               <Button sx={{ mt: 2 }} type="submit" variant="contained">

@@ -5,12 +5,32 @@ import { useLayoutEffect } from "react";
 import { Box } from "@mui/material";
 import AssignmentsList from "../features/assignments/AssignmentsList";
 import { routes } from "../routes";
-import { getAssignments } from "../features/assignments/assignmentSlice";
+import {
+  getAssignmentById,
+  getAssignments,
+} from "../features/assignments/assignmentSlice";
+import { getUserEnrollments } from "../features/enrollments/enrollmentsSlice";
+
+function getUnenrolledAssignments(allAssignments, userEnrollment) {
+  const enrolledAssignmentIds = new Set(
+    userEnrollment.map((enrollment) => enrollment.assignment)
+  );
+
+  const unenrolledAssignments = allAssignments.filter((assignment) => {
+    return !enrolledAssignmentIds.has(assignment.id);
+  });
+  return unenrolledAssignments;
+}
+
 export default function UserBasePage() {
   const currentUser = useSelector(getUser);
   const navigate = useNavigate();
-  const assignmentsList = useSelector(getAssignments);
-
+  const allAssignments = useSelector(getAssignments);
+  const userEnrollments = useSelector(getUserEnrollments);
+  const assignmentsList = getUnenrolledAssignments(
+    allAssignments,
+    userEnrollments
+  );
   useLayoutEffect(() => {
     if (currentUser.role === "admin") {
       navigate(routes.adminBasePage, { replace: true });

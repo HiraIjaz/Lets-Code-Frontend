@@ -1,32 +1,25 @@
 import { useSelector } from "react-redux";
 import { getUserEnrollments } from "../enrollments/enrollmentsSlice";
 import { Box } from "@mui/material";
-import { getAssignmentById } from "./assignmentSlice";
+import { getAssignments } from "./assignmentSlice";
 import AssignmentsList from "./AssignmentsList";
-
-function getEnrolledAssignments(userEnrollment, getAssignmentById) {
-  const enrolledAssignments = [];
-  userEnrollment.forEach((enrollment) => {
-    const assignmentId = enrollment.assignment;
-    const assignment = useSelector((state) =>
-      getAssignmentById(state, assignmentId)
-    );
-    console.log(assignment);
-    if (assignment) {
-      enrolledAssignments.push(assignment);
-    }
-  });
-
-  return enrolledAssignments;
-}
 
 function UserAssignments() {
   const userEnrollments = useSelector(getUserEnrollments);
-  const enrolledAssignments = getEnrolledAssignments(
-    userEnrollments,
-    getAssignmentById
-  );
-
+  const allAssignments = useSelector(getAssignments);
+  const enrolledAssignments = [];
+  userEnrollments.forEach((enrollment) => {
+    const assignmentId = enrollment.assignment;
+    enrolledAssignments.push(
+      allAssignments.find((assignment) => assignment.id === assignmentId)
+    );
+  });
+  const assignmentScores = {};
+  userEnrollments.forEach((enrollment) => {
+    const { assignment, score } = enrollment;
+    assignmentScores[assignment] = score;
+  });
+  console.log("hereee");
   return (
     <Box
       sx={{
@@ -42,6 +35,7 @@ function UserAssignments() {
       <AssignmentsList
         assignmentsList={enrolledAssignments}
         userChoice="attempt"
+        assignmentScores={assignmentScores}
       />
     </Box>
   );

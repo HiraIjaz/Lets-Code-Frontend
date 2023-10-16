@@ -8,10 +8,15 @@ import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { fetchAssignments } from "./features/assignments/assignmentSlice.js";
 import { fetchQuestions } from "./features/questions/questionSlice.js";
+import {
+  fetchPendingEnrollments,
+  fetchAllEnrollments,
+} from "./features/enrollments/enrollmentsSlice.js";
 import { PersistGate } from "redux-persist/integration/react";
 
 store.dispatch(fetchAssignments());
 store.dispatch(fetchQuestions());
+store.dispatch(fetchPendingEnrollments());
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>

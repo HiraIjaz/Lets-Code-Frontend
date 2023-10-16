@@ -5,7 +5,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Roles from "../roles";
 import Divider from "@mui/material/Divider";
-import { Button } from "@mui/material";
+import { Button, Badge } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from "@mui/icons-material/Home";
@@ -16,10 +16,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser, logout } from "../features/users/usersSlice";
 import { routes } from "../routes";
 import BallotIcon from "@mui/icons-material/Ballot";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
 import EditNotificationsIcon from "@mui/icons-material/EditNotifications";
 import {
   fetchPendingEnrollments,
+  getPendingEnrollments,
   fetchUserEnrollments,
+  clearEnrollmentSlice,
+  fetchAllEnrollments,
 } from "../features/enrollments/enrollmentsSlice";
 
 export default function AccountMenu() {
@@ -27,6 +31,7 @@ export default function AccountMenu() {
   const dispatch = useDispatch();
   const currentUser = useSelector(getUser);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const pendingEnrollments = useSelector(getPendingEnrollments);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -145,21 +150,37 @@ export default function AccountMenu() {
           <MenuItem
             onClick={() => {
               handleClose();
-              dispatch(fetchPendingEnrollments());
               navigate(routes.enrollmentRequests);
             }}
           >
-            <EditNotificationsIcon /> Enrollemt Requests
+            <Badge
+              badgeContent={pendingEnrollments.length}
+              color="success"
+              sx={{ mr: 1 }}
+            >
+              <EditNotificationsIcon />
+            </Badge>
+            Enrollemt Requests
+          </MenuItem>
+        )}
+        {currentUser.role === Roles.ADMIN && (
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              dispatch(fetchAllEnrollments());
+              navigate(routes.reports);
+            }}
+          >
+            <AnalyticsIcon /> Reports
           </MenuItem>
         )}
         <Divider />
         <MenuItem
           onClick={() => {
             handleClose();
+
             dispatch(logout());
-            if (!currentUser) {
-              navigate(routes.home);
-            }
+            navigate(routes.home);
           }}
         >
           <LogoutIcon />

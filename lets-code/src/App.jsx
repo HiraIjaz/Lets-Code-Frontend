@@ -17,9 +17,11 @@ import QuestionBank from "./pages/QuestionBank";
 import EditCodingQuestion from "./features/questions/EditCodingQuestion";
 import EditMcQuestion from "./features/questions/EditMcQuestion";
 import EnrollmentRequests from "./features/enrollments/EnrollmentRequests";
-import UserAssignments from "./features/assignments/userAssignments";
+import UserAssignments from "./features/assignments/UserAssignments";
 import Roles from "./roles";
-
+import AttemptAssignment from "./features/assignments/AtemptAssignment";
+import ScorePage from "./pages/ScorePage";
+import AssignmentReports from "./features/assignments/AssignmentReports";
 function App() {
   return (
     <Routes>
@@ -32,6 +34,7 @@ function App() {
           <Route path="signup" element={<UserCreationForm />} />
           <Route path="profile-info" element={<UserProfileForm />} />
           <Route path="my-assignments" element={<UserAssignments />} />
+          <Route path="score" element={<ScorePage />} />
           <Route
             path="admin-base"
             element={
@@ -96,7 +99,19 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="reports/"
+            element={
+              <PrivateRoute allowedRole={Roles.ADMIN}>
+                <AssignmentReports />
+              </PrivateRoute>
+            }
+          />
           <Route path="view-assignment/:id" element={<ViewAssignmnet />} />
+          <Route
+            path="attempt-assignment/:id"
+            element={<AttemptAssignment />}
+          />
         </Route>
       </Route>
     </Routes>

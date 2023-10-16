@@ -3,7 +3,6 @@ import AllQuestions from "../questions/AllQuestions";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { getSelectedQuestions } from "../questions/questionSlice";
 import { useParams } from "react-router-dom";
 import { getAssignmentById } from "./assignmentSlice";
 import { updateAssignment } from "./assignmentSlice";
@@ -18,7 +17,7 @@ function EditAssignment() {
     getAssignmentById(state, parseInt(id, 0))
   );
 
-  const questionsList = useSelector(getSelectedQuestions);
+  const questionsList = assignment.questions;
 
   const validationSchema = Yup.object({
     title: Yup.string()

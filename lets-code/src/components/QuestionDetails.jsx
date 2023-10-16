@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+const OPTIONS = ["A", "B", "C", "D"];
 const QuestionDetails = ({ question }) => {
   return (
     <>
@@ -26,14 +27,8 @@ const QuestionDetails = ({ question }) => {
           <ul>
             {question.data.choices.map((choice, index) => (
               <li key={index}>
-                <label>
-                  <input
-                    type="radio"
-                    name={`mcq_${question.id}`}
-                    value={choice}
-                  />
-                  {choice}
-                </label>
+                <strong>{OPTIONS[index]}.</strong>
+                {choice}
               </li>
             ))}
             {/* <p>

@@ -22,9 +22,5 @@ function AddQuestions({ data, next, prev }) {
     </>
   );
 }
-AddQuestions.propTypes = {
-  data: PropTypes.object.isRequired,
-  next: PropTypes.func.isRequired,
-  prev: PropTypes.func.isRequired,
-};
+
 export default AddQuestions;

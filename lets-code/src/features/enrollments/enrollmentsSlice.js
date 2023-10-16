@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ENROLLMENT_REQUEST_API,USER_APPROVED_ENROLLMENTS } from "../../urls";
+import { ENROLLMENT_REQUEST_API,USER_APPROVED_ENROLLMENTS, ALL_ENROLLMENTS } from "../../urls";
 import { HEADERS } from "../../utils";
 const initialState = {
   enrollments: [], 
+  allEnrollments: [],
   pendingEnrollments: [], 
   error:null,
   success:null,
@@ -16,23 +17,34 @@ export const fetchPendingEnrollments = createAsyncThunk('enrollments/fetchPendin
       })
   return response.data;
 });
+export const fetchAllEnrollments = createAsyncThunk('enrollments/fetchAllEnrollments', async () => {
+  const response = await axios.get(ALL_ENROLLMENTS,{
+        headers: HEADERS,
+      })
+  return response.data;
+});
 export const fetchUserEnrollments = createAsyncThunk('enrollments/fetchUserEnrollments', async () => {
-
   const response = await axios.get(USER_APPROVED_ENROLLMENTS,{
         headers: HEADERS,
       });
   return response.data;
 });
-export const makeEnrollmentRequest  = createAsyncThunk('enrollment/makeEnrollment/Request', async(data)=>{
+export const makeEnrollmentRequest  = createAsyncThunk('enrollment/makeEnrollmentRequest', async(data)=>{
   try {
-      const HEADERS = {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      };
-      const response = await axios.post(`${ENROLLMENT_REQUEST_API}${encodeURIComponent(data.id)}/`, data, {
+      const response = await axios.post(ENROLLMENT_REQUEST_API, data, {
         headers: HEADERS,
       });
+      return response.data;
+    } catch (error) {
       
-
+      return Promise.reject(error.message);
+    }
+})
+export const markEnrollment  = createAsyncThunk('enrollment/markEnrollment', async(data)=>{
+  try {
+      const response = await axios.patch(`${ENROLLMENT_REQUEST_API}${encodeURIComponent(data.id)}/`, data, {
+        headers: HEADERS,
+      });
       return response.data;
     } catch (error) {
       
@@ -44,14 +56,9 @@ export const approveEnrollmentRequest = createAsyncThunk(
   async (data) => {
     
     try {
-      const HEADERS = {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      };
       const response = await axios.put(`${ENROLLMENT_REQUEST_API}${encodeURIComponent(data.id)}/`, data, {
         headers: HEADERS,
       });
-      
-
       return response.data;
     } catch (error) {
       
@@ -63,11 +70,33 @@ const enrollmentSlice = createSlice({
   name: 'enrollments',
   initialState,
   reducers: {
+    clearEnrollmentSlice:(state)=>{
+        state.enrollments= [], 
+        state.allEnrollments= [],
+        state.pendingEnrollments= [], 
+        state.error=null,
+        state.success=null,
+        state.loading=null
+    }
 
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserEnrollments.pending, (state) => {
+        state.loading = 'loading';
+        state.success= null
+        state.error=null
+      })
+      .addCase(fetchAllEnrollments.fulfilled, (state, action) => {
+        state.loading = 'succeeded';
+        state.success= 'All Enrollments fetched';
+        state.allEnrollments = action.payload;
+      })
+      .addCase(fetchAllEnrollments.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(fetchAllEnrollments.pending, (state) => {
         state.loading = 'loading';
         state.success= null
         state.error=null
@@ -89,7 +118,6 @@ const enrollmentSlice = createSlice({
       .addCase(fetchPendingEnrollments.fulfilled, (state, action) => {
         state.loading = 'succeeded';
         state.success= 'Pending enrollments fetched'
-        console.log(action.payload)
         state.pendingEnrollments = action.payload;
       })
       .addCase(fetchPendingEnrollments.rejected, (state, action) => {
@@ -107,16 +135,54 @@ const enrollmentSlice = createSlice({
         state.pendingEnrollments = state.pendingEnrollments.filter((enrollment) => {
           return enrollment.id !== approvedRequest.id;
         })
-  })
+      })
       .addCase(approveEnrollmentRequest.rejected, (state, action) => {
         state.loading = 'failed';
         state.error = action.error.message;
-      });
+      })
+      .addCase(makeEnrollmentRequest.pending, (state) => {
+        state.loading = 'loading';
+        state.success= null
+        state.error=null
+      })
+      .addCase(makeEnrollmentRequest.fulfilled, (state, action) => {
+        state.loading = 'succeeded';
+        state.success= 'Enrollment request made';
+        state.pendingEnrollments.push(action.payload);
+      })
+      .addCase(makeEnrollmentRequest.rejected, (state, action) => {
+        state.loading = 'failed';
+         state.success=null;
+        state.error = action.error.message;
+      })
+       .addCase(markEnrollment.pending, (state) => {
+        state.loading = 'loading';
+        state.success= null
+        state.error=null
+      })
+      .addCase(markEnrollment.fulfilled, (state, action) => {
+        state.loading = 'succeeded';
+        state.success= 'Assignment scored';
+        const data = action.payload;
+        state.enrollments = state.enrollments.map((enrollment) =>
+          enrollment.id === data.id
+            ? data
+            : enrollment
+        );
+        
+      })
+      .addCase(markEnrollment.rejected, (state, action) => {
+        state.loading = 'failed';
+         state.success=null;
+        state.error = action.error.message;
+      })
     }
 })
 
 export const getPendingEnrollments = (state) => state.enrollments.pendingEnrollments
 export const getSuccessMessage= (state) => state.enrollments.success
+export const getAllEnrollments = (state) => state.enrollments.allEnrollments
 export const getUserEnrollments= (state) => state.enrollments.enrollments
 export default enrollmentSlice.reducer
-
+export const {clearEnrollmentSlice} = enrollmentSlice.actions
+ 

@@ -10,7 +10,6 @@ import { getAssignments } from "../features/assignments/assignmentSlice";
 import { useState } from "react";
 
 function AdminBase() {
-  console.log("here");
   const navigate = useNavigate();
   const assignmentsList = useSelector(getAssignments);
   const success = useSelector(getSuccessMessage);
@@ -35,7 +34,10 @@ function AdminBase() {
         <h2>Hi, Welcome Back</h2>
         <hr />
         <div>
-          <Button variant="outlined" onClick={handleCreateNewAssignmentClick}>
+          <Button
+            variant="outlined"
+            onClick={() => handleCreateNewAssignmentClick()}
+          >
             <AddIcon /> Create New Assignment
           </Button>
 

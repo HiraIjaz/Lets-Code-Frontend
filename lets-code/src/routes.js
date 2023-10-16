@@ -12,5 +12,11 @@ export const routes = {
   questionBank:'/user/question-bank',
   editmcQuestion:'/user/edit-mcq-question',
   editcodingQuestion:'/user/edit-coding-question',
-  enrollmentRequests:'/user/enrollmet-requests'
+  enrollmentRequests:'/user/enrollmet-requests',
+  attemptAssignment: '/user/attempt-assignment',
+  viewAssignment: '/user/view-assignment',
+  editAssignment: '/user/edit-assignment',
+  scorePage: '/user/score/',
+  reports:'/user/reports/'
+
 };

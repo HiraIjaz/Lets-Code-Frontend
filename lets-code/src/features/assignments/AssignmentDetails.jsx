@@ -7,20 +7,21 @@ function AssignmentDetails({ data, next, prev }) {
   const validationSchema = Yup.object({
     title: Yup.string().required("Title is required").max(100),
   });
+
   return (
     <Formik
       initialValues={data}
       validationSchema={validationSchema}
       onSubmit={(values, actions) => {
         actions.setSubmitting(false);
-        next(values);
       }}
     >
       {({ values }) => (
         <Form className="assignment-form">
           <SliderBtns
-            date={data}
+            data={values}
             prev={prev}
+            next={next}
             showPrev={false}
             showNext={true}
           />
@@ -56,9 +57,5 @@ function AssignmentDetails({ data, next, prev }) {
     </Formik>
   );
 }
-AssignmentDetails.propTypes = {
-  data: PropTypes.object.isRequired,
-  next: PropTypes.func.isRequired,
-  prev: PropTypes.func.isRequired,
-};
+
 export default AssignmentDetails;
