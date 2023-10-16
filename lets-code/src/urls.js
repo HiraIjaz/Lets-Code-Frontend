@@ -1,5 +1,6 @@
 export const QUESTIONS_API = import.meta.env.VITE_BASE_API_URL + "questions/";
-export const ALL_QUESTIONS_API = import.meta.env.VITE_BASE_API_URL + "all-questions/";
+export const SUBMIT_CODING_QUESTIONS_API = import.meta.env.VITE_BASE_API_URL + "submit-coding-question/";
+
 
 export const LOGIN_API_URL = import.meta.env.VITE_BASE_API_URL+'login/'
 export const UPDATE_API_URL =  import.meta.env.VITE_BASE_API_URL+'update/'

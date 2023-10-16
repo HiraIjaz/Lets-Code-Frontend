@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
-import { QUESTIONS_API } from '../../urls';
+import { QUESTIONS_API, SUBMIT_CODING_QUESTIONS_API } from '../../urls';
 import { HEADERS } from '../../utils';
 
  
@@ -16,7 +16,6 @@ export const createQuestion = createAsyncThunk(
       const response = await axios.post(QUESTIONS_API, data, {
         headers: HEADERS,
       });
-
       return response.data;
     } catch (error) {
       return Promise.reject(error.message);
@@ -50,6 +49,21 @@ export const deleteQuestion = createAsyncThunk(
     }
   }
 );
+export const submitCodingQuestion = createAsyncThunk(
+  "questions/submit",
+  async (data) => {
+    try {
+      console.log(data)
+      const response = await axios.post(SUBMIT_CODING_QUESTIONS_API, data, {
+        headers: HEADERS,
+      });
+
+      return response.data;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
 const questionsSlice = createSlice({
   name: 'questions',
   initialState: {
@@ -57,7 +71,8 @@ const questionsSlice = createSlice({
     selectedQuestions:[],
     loading: 'idle',
     error: null,
-    success:null
+    success:null,
+    score:0
   },
   reducers: {
     addQuestion: (state, action) => {
@@ -72,7 +87,10 @@ const questionsSlice = createSlice({
        return {
     ...state,
     selectedQuestions: action.payload
-  };
+  }
+    },
+    emptySelectedQuestion:(state)=>{
+      state.selectedQuestions=[]
     }
 
   },
@@ -150,7 +168,23 @@ const questionsSlice = createSlice({
         state.loading = 'failed';
         state.success=null;
         state.error = action.error.message;
-      });
+      })
+      .addCase(submitCodingQuestion.pending, (state) => {
+        state.loading = 'loading';
+        state.error = null;
+        state.score = 0
+      })
+      .addCase(submitCodingQuestion.fulfilled, (state, action) => {
+        state.loading = 'succeeded';
+        state.success= 'Questions marked'
+        state.error = null;
+        state.score = action.payload.score
+      })
+       .addCase(submitCodingQuestion.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.error = action.error.message;
+        state.score = 0
+      })
   },
 });
 
@@ -168,6 +202,7 @@ export const getQuestionById = (state, questionId) => {
   );
 };
 export const getSuccessMessage=(state) => state.questions.success
+export const getCodingScore = (state) => state.questions.score
 
 //actions
-export const {addQuestion,removeQuestion,putSelectedQuestions} = questionsSlice.actions;
+export const {addQuestion,removeQuestion,putSelectedQuestions,emptySelectedQuestion} = questionsSlice.actions;

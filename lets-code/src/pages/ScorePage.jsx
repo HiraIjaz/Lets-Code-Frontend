@@ -1,15 +1,37 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CalculateDetailedScore } from "../utils";
-import { Box, Typography, Paper, colors } from "@mui/material";
-
-const backgroundImageUrl = "url('/your-background-image.jpg')"; // Replace with your background image URL
-
+import { Box, Typography, Paper, colors, Button } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { getCodingScore } from "../features/questions/questionSlice";
+import { getUserEnrollments } from "../features/enrollments/enrollmentsSlice";
+import { markEnrollment } from "../features/enrollments/enrollmentsSlice";
+import { routes } from "../routes";
 function ScorePage() {
+  const codingScore = useSelector(getCodingScore);
   const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const result = CalculateDetailedScore(
     location.state.answers,
-    location.state.questionList
+    location.state.mcqquestionList,
+    location.state.codingQuestionsCount,
+    codingScore
   );
+
+  const enrollments = useSelector(getUserEnrollments);
+  const currentEnrollment = enrollments.find(
+    (e) => e.assignment === parseInt(location.state.id)
+  );
+  function handleClick() {
+    const updatedData = {
+      ...currentEnrollment,
+      status: "attempted",
+      score: result.score,
+    };
+    dispatch(markEnrollment(updatedData)).then(() => {
+      navigate(routes.userAssignments);
+    });
+  }
 
   return (
     <Box
@@ -52,6 +74,9 @@ function ScorePage() {
         <Typography variant="h6" gutterBottom sx={{ color: "#f44336" }}>
           Incorrect: {result.incorrect_count}
         </Typography>
+        <Button variant="contained" onClick={() => handleClick()}>
+          Go Back
+        </Button>
       </Paper>
     </Box>
   );

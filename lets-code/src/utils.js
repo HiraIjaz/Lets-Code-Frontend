@@ -21,10 +21,12 @@ export const CalculateScore=(answerslist, questionsList) =>{
 
   return score;
 }
-export const CalculateDetailedScore=(answerslist, questionsList) =>{
+export const CalculateDetailedScore=(answerslist, questionsList, codingQcount, codingScore) =>{
   let score = 0;
   let correct_count=0;
   let incorrect_count = 0
+  let correct_count_coding=0
+  console.log(codingQcount)
 
   for (const answer of answerslist) {
     const question = questionsList.find((q) => q.id === answer.questionId);
@@ -36,7 +38,15 @@ export const CalculateDetailedScore=(answerslist, questionsList) =>{
       incorrect_count+=1;
     }
   }
-  
+  score+= codingScore
+  if (codingScore>0)
+    {
+      correct_count_coding+= codingScore/10
+      incorrect_count+= codingQcount- correct_count_coding
+  }
+  else
+    {incorrect_count+= codingQcount}
+  correct_count+= correct_count_coding
 
   return { score, correct_count,incorrect_count};
 }
